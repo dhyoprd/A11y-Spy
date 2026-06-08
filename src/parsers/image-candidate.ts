@@ -10,6 +10,7 @@ export type ImageAttribute = {
 
 export type ImageElementCandidate = {
   attributes: ImageAttribute[];
+  hasSpreadAttribute?: boolean;
   tagNameStartOffset: number;
   tagNameEndOffset: number;
 };

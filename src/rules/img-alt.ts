@@ -14,6 +14,10 @@ export function runImgAltRule(
       return [];
     }
 
+    if (candidate.hasSpreadAttribute) {
+      return [];
+    }
+
     return [
       {
         ruleId: IMG_ALT_RULE_ID,
