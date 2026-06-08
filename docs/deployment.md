@@ -16,13 +16,23 @@ Package the extension with the project-local VSCE dependency:
 npm run package
 ```
 
-This creates a `.vsix` file.
+This creates `a11y-spy-0.1.0.vsix` in the project root. v0.1 packaging is local only; CI validates compile, lint, and tests but does not upload or publish VSIX artifacts.
 
 ## Local Install from VSIX
 
 ```bash
 code --install-extension a11y-spy-0.1.0.vsix
 ```
+
+## Manual Smoke Test
+
+1. Install the generated VSIX or launch the Extension Development Host.
+2. Open an HTML, JSX, or TSX file.
+3. Add `<img src="/hero.png">`.
+4. Confirm the missing-alt diagnostic appears.
+5. Apply the `Add alt="" for decorative image` quick fix.
+6. Confirm the image becomes `<img alt="" src="/hero.png">` or receives an equivalent inserted `alt=""`.
+7. Confirm CSS contrast, Tailwind contrast, framework image components, and `<input type="image">` do not produce v0.1 diagnostics.
 
 ## Marketplace Publishing
 
