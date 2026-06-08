@@ -1,7 +1,20 @@
-export type ImageAttributeValue = {
-  kind: "empty" | "string";
-  value: string;
-};
+export type ImageAttributeValue =
+  | {
+      kind: "empty";
+      value: "";
+    }
+  | {
+      kind: "string";
+      value: string;
+    }
+  | {
+      kind: "boolean";
+      value: boolean;
+    }
+  | {
+      kind: "expression";
+      value: string;
+    };
 
 export type ImageAttribute = {
   name: string;

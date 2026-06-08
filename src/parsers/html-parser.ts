@@ -1,6 +1,6 @@
 import { parseFragment, type DefaultTreeAdapterMap } from "parse5";
 
-import type { ImageElementCandidate } from "./image-candidate";
+import type { ImageAttributeValue, ImageElementCandidate } from "./image-candidate";
 
 type HtmlNode = DefaultTreeAdapterMap["node"];
 type HtmlElement = DefaultTreeAdapterMap["element"];
@@ -47,12 +47,13 @@ function toImageCandidate(element: HtmlElement): ImageElementCandidate | undefin
   return {
     attributes: element.attrs.map((attribute) => ({
       name: attribute.name,
-      value: {
-        kind: attribute.value === "" ? "empty" : "string",
-        value: attribute.value
-      }
+      value: toAttributeValue(attribute.value)
     })),
     tagNameStartOffset,
     tagNameEndOffset: tagNameStartOffset + element.tagName.length
   };
+}
+
+function toAttributeValue(value: string): ImageAttributeValue {
+  return value === "" ? { kind: "empty", value: "" } : { kind: "string", value };
 }

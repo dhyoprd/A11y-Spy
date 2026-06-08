@@ -1,6 +1,6 @@
 import ts from "typescript";
 
-import type { ImageElementCandidate } from "./image-candidate";
+import type { ImageAttributeValue, ImageElementCandidate } from "./image-candidate";
 
 export function findJsxImageCandidates(
   documentText: string,
@@ -56,10 +56,7 @@ function toImageCandidate(
     return [
       {
         name: getAttributeName(property.name, sourceFile),
-        value: {
-          kind: "string" as const,
-          value: getAttributeValue(property, sourceFile)
-        }
+        value: getAttributeValue(property, sourceFile)
       }
     ];
   });
@@ -76,14 +73,39 @@ function getAttributeName(name: ts.JsxAttributeName, sourceFile: ts.SourceFile):
   return ts.isIdentifier(name) ? name.text : name.getText(sourceFile);
 }
 
-function getAttributeValue(attribute: ts.JsxAttribute, sourceFile: ts.SourceFile): string {
+function getAttributeValue(
+  attribute: ts.JsxAttribute,
+  sourceFile: ts.SourceFile
+): ImageAttributeValue {
   if (!attribute.initializer) {
-    return "";
+    return { kind: "boolean", value: true };
   }
 
   if (ts.isStringLiteral(attribute.initializer)) {
-    return attribute.initializer.text;
+    return { kind: "string", value: attribute.initializer.text };
   }
 
-  return attribute.initializer.getText(sourceFile);
+  if (!ts.isJsxExpression(attribute.initializer)) {
+    return { kind: "expression", value: attribute.initializer.getText(sourceFile) };
+  }
+
+  const expression = attribute.initializer.expression;
+
+  if (!expression) {
+    return { kind: "expression", value: attribute.initializer.getText(sourceFile) };
+  }
+
+  if (expression.kind === ts.SyntaxKind.TrueKeyword) {
+    return { kind: "boolean", value: true };
+  }
+
+  if (expression.kind === ts.SyntaxKind.FalseKeyword) {
+    return { kind: "boolean", value: false };
+  }
+
+  if (ts.isStringLiteral(expression) || ts.isNoSubstitutionTemplateLiteral(expression)) {
+    return { kind: "string", value: expression.text };
+  }
+
+  return { kind: "expression", value: expression.getText(sourceFile) };
 }
