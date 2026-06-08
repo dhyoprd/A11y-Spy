@@ -63,6 +63,6 @@ Images with JSX spread props are not reported in v0.1 because the spread may pro
 
 ## Limits
 
-v0.1 checks only native lowercase JSX/TSX `<img>` elements and HTML image elements. It does not check framework components such as Next.js `<Image>` or `<input type="image">`.
+v0.1 checks only native lowercase JSX/TSX `<img>` elements and HTML image elements. It does not check framework image components such as Next.js `<Image>`, `<input type="image">`, CSS color contrast, Tailwind color contrast, or other accessibility rules.
 
 Documents larger than 500 KB are skipped to keep live editor diagnostics responsive.
