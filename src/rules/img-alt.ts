@@ -1,4 +1,4 @@
-import type { DiagnosticResult } from "../core/types";
+import type { DiagnosticResult, DiagnosticSeverity } from "../core/types";
 import type { ImageElementCandidate } from "../parsers/image-candidate";
 import { offsetsToRange } from "../utils/range";
 
@@ -7,7 +7,8 @@ export const IMG_ALT_MESSAGE = "Image element is missing an alt attribute.";
 
 export function runImgAltRule(
   documentText: string,
-  candidates: ImageElementCandidate[]
+  candidates: ImageElementCandidate[],
+  severity: DiagnosticSeverity = "warning"
 ): DiagnosticResult[] {
   return candidates.flatMap((candidate) => {
     if (hasAltAttribute(candidate)) {
@@ -31,7 +32,7 @@ export function runImgAltRule(
         ruleId: IMG_ALT_RULE_ID,
         source: "A11y-Spy",
         message: IMG_ALT_MESSAGE,
-        severity: "warning",
+        severity,
         fix: {
           title: 'Add alt="" for decorative image',
           kind: "quickfix",

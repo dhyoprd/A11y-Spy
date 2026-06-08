@@ -30,6 +30,46 @@ describe("runA11ySpy", () => {
     ]);
   });
 
+  it("skips image-alt diagnostics when the extension or rule is disabled", () => {
+    const disabledExtensionDiagnostics = runA11ySpy({
+      documentText: '<img src="/hero.png">',
+      fileName: "index.html",
+      languageId: "html",
+      config: {
+        enabled: false,
+        rules: { imgAlt: "warning" }
+      }
+    });
+    const disabledRuleDiagnostics = runA11ySpy({
+      documentText: '<img src="/hero.png">',
+      fileName: "index.html",
+      languageId: "html",
+      config: {
+        enabled: true,
+        rules: { imgAlt: "off" }
+      }
+    });
+
+    expect(disabledExtensionDiagnostics).toEqual([]);
+    expect(disabledRuleDiagnostics).toEqual([]);
+  });
+
+  it("uses configured image-alt severities for diagnostics", () => {
+    for (const severity of ["info", "warning", "error"] as const) {
+      const diagnostics = runA11ySpy({
+        documentText: '<img src="/hero.png">',
+        fileName: "index.html",
+        languageId: "html",
+        config: {
+          enabled: true,
+          rules: { imgAlt: severity }
+        }
+      });
+
+      expect(diagnostics[0]?.severity).toBe(severity);
+    }
+  });
+
   it("does not report HTML images with explicit alt attributes", () => {
     const diagnostics = runA11ySpy({
       documentText: [
