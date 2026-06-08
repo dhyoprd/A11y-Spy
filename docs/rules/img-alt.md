@@ -53,6 +53,8 @@ In JSX and TSX, statically obvious hidden or presentational values are also supp
 <img src="/divider.png" role="presentation" />
 ```
 
+`aria-hidden="false"`, empty HTML `aria-hidden=""`, and bare HTML `aria-hidden` still warn. Role values are trimmed and matched case-insensitively against `presentation` and `none`, but dynamic JSX/TSX role or `aria-hidden` expressions still warn unless their value is statically obvious.
+
 Images with JSX spread props are not reported in v0.1 because the spread may provide `alt`:
 
 ```tsx

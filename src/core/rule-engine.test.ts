@@ -43,6 +43,44 @@ describe("runA11ySpy", () => {
     expect(diagnostics).toEqual([]);
   });
 
+  it('does not report HTML images with aria-hidden="true"', () => {
+    const diagnostics = runA11ySpy({
+      documentText: '<img src="/decor.png" aria-hidden="true">',
+      fileName: "index.html",
+      languageId: "html"
+    });
+
+    expect(diagnostics).toEqual([]);
+  });
+
+  it("does not report HTML images with presentational roles", () => {
+    const diagnostics = runA11ySpy({
+      documentText: [
+        '<img src="/presentation.png" role=" presentation ">',
+        '<img src="/none.png" role="NONE">'
+      ].join("\n"),
+      fileName: "index.html",
+      languageId: "html"
+    });
+
+    expect(diagnostics).toEqual([]);
+  });
+
+  it("reports HTML images when aria-hidden is not explicitly true", () => {
+    const diagnostics = runA11ySpy({
+      documentText: [
+        '<img src="/false.png" aria-hidden="false">',
+        '<img src="/empty.png" aria-hidden="">',
+        '<img src="/bare.png" aria-hidden>'
+      ].join("\n"),
+      fileName: "index.html",
+      languageId: "html"
+    });
+
+    expect(diagnostics).toHaveLength(3);
+    expect(diagnostics.every((diagnostic) => diagnostic.fix)).toBe(true);
+  });
+
   it("does not report image-like text in comments, scripts, or styles", () => {
     const diagnostics = runA11ySpy({
       documentText: [
@@ -157,6 +195,60 @@ describe("runA11ySpy", () => {
 
     expect(diagnostics).toHaveLength(1);
     expect(diagnostics[0]?.ruleId).toBe("a11y-spy/img-alt");
+  });
+
+  it("does not report JSX images with statically true aria-hidden props", () => {
+    const diagnostics = runA11ySpy({
+      documentText: [
+        "const view = <>",
+        '  <img src="/shorthand.png" aria-hidden />',
+        '  <img src="/boolean.png" aria-hidden={true} />',
+        '  <img src="/string.png" aria-hidden="true" />',
+        "</>;"
+      ].join("\n"),
+      fileName: "component.jsx",
+      languageId: "javascriptreact"
+    });
+
+    expect(diagnostics).toEqual([]);
+  });
+
+  it("does not report JSX and TSX images with static presentational roles", () => {
+    const jsxDiagnostics = runA11ySpy({
+      documentText: [
+        "const view = <>",
+        '  <img src="/presentation.png" role=" presentation " />',
+        '  <img src="/none.png" role={"NONE"} />',
+        "</>;"
+      ].join("\n"),
+      fileName: "component.jsx",
+      languageId: "javascriptreact"
+    });
+    const tsxDiagnostics = runA11ySpy({
+      documentText: 'const view = <img src="/none.png" role={`none`} />;',
+      fileName: "component.tsx",
+      languageId: "typescriptreact"
+    });
+
+    expect([...jsxDiagnostics, ...tsxDiagnostics]).toEqual([]);
+  });
+
+  it("reports JSX images when hidden or role values are false, empty, or dynamic", () => {
+    const diagnostics = runA11ySpy({
+      documentText: [
+        "const view = <>",
+        '  <img src="/false.png" aria-hidden={false} />',
+        '  <img src="/dynamic-hidden.png" aria-hidden={isHidden} />',
+        '  <img src="/empty-role.png" role="" />',
+        '  <img src="/dynamic-role.png" role={imageRole} />',
+        "</>;"
+      ].join("\n"),
+      fileName: "component.jsx",
+      languageId: "javascriptreact"
+    });
+
+    expect(diagnostics).toHaveLength(4);
+    expect(diagnostics.every((diagnostic) => diagnostic.fix)).toBe(true);
   });
 
   it("does not report JSX images with explicit alt props", () => {

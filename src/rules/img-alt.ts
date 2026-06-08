@@ -14,6 +14,14 @@ export function runImgAltRule(
       return [];
     }
 
+    if (isAriaHiddenTrue(candidate)) {
+      return [];
+    }
+
+    if (hasPresentationalRole(candidate)) {
+      return [];
+    }
+
     if (candidate.hasSpreadAttribute) {
       return [];
     }
@@ -42,4 +50,40 @@ export function runImgAltRule(
 
 function hasAltAttribute(candidate: ImageElementCandidate): boolean {
   return candidate.attributes.some((attribute) => attribute.name.toLowerCase() === "alt");
+}
+
+function isAriaHiddenTrue(candidate: ImageElementCandidate): boolean {
+  return candidate.attributes.some((attribute) => {
+    if (attribute.name.toLowerCase() !== "aria-hidden") {
+      return false;
+    }
+
+    if (attribute.value.kind === "boolean") {
+      return attribute.value.value;
+    }
+
+    return attribute.value.kind === "string" && isNormalizedValue(attribute.value.value, ["true"]);
+  });
+}
+
+function hasPresentationalRole(candidate: ImageElementCandidate): boolean {
+  return hasStringAttributeValue(candidate, "role", ["none", "presentation"]);
+}
+
+function hasStringAttributeValue(
+  candidate: ImageElementCandidate,
+  attributeName: string,
+  acceptedValues: string[]
+): boolean {
+  return candidate.attributes.some((attribute) => {
+    return (
+      attribute.name.toLowerCase() === attributeName &&
+      attribute.value.kind === "string" &&
+      isNormalizedValue(attribute.value.value, acceptedValues)
+    );
+  });
+}
+
+function isNormalizedValue(value: string, acceptedValues: string[]): boolean {
+  return acceptedValues.includes(value.trim().toLowerCase());
 }
