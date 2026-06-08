@@ -61,9 +61,11 @@ Potential files:
 
 Each rule detects one accessibility issue.
 
-Potential files:
+v0.1 file:
 
 - `src/rules/img-alt.ts`
+
+Future rules such as `color-contrast` and `tailwind-contrast` should be added only when those releases begin.
 - `src/rules/color-contrast.ts`
 - `src/rules/tailwind-contrast.ts`
 
@@ -82,7 +84,8 @@ type RuleResult = {
   };
   fix?: {
     title: string;
-    edit: TextEdit;
+    insertText: string;
+    offset: number;
   };
 };
 ```
@@ -91,19 +94,19 @@ type RuleResult = {
 
 Responsible for understanding source code.
 
-MVP parser strategy:
+v0.1 parser strategy:
 
-- Use lightweight parsing for HTML.
-- Use the TypeScript compiler or an AST parser for JSX/TSX later.
-- Use PostCSS or a simple CSS parser for CSS.
-- Use a Tailwind color map for basic utility class analysis.
+- Use `parse5` with source-location support for HTML.
+- Use the bundled TypeScript compiler API for JSX/TSX.
+- Return UTF-16 offsets from parser candidates and convert to line/character ranges in shared utilities.
+- Do not use regex/string scanning for JSX/TSX.
+- PostCSS, CSS parsing, and Tailwind color maps are planned after v0.1.
 
 Potential files:
 
 - `src/parsers/html-parser.ts`
 - `src/parsers/jsx-parser.ts`
-- `src/parsers/css-parser.ts`
-- `src/parsers/tailwind-parser.ts`
+- `src/utils/range.ts`
 
 ### 5. Utilities
 
@@ -111,8 +114,6 @@ Shared helpers.
 
 Potential files:
 
-- `src/utils/color.ts`
-- `src/utils/contrast.ts`
 - `src/utils/range.ts`
 - `src/utils/language.ts`
 
@@ -125,21 +126,15 @@ src/
 |   |-- rule-engine.ts
 |   `-- types.ts
 |-- rules/
-|   |-- img-alt.ts
-|   |-- color-contrast.ts
-|   `-- tailwind-contrast.ts
+|   `-- img-alt.ts
 |-- parsers/
 |   |-- html-parser.ts
-|   |-- jsx-parser.ts
-|   |-- css-parser.ts
-|   `-- tailwind-parser.ts
+|   `-- jsx-parser.ts
 |-- vscode/
 |   |-- diagnostics.ts
 |   |-- code-actions.ts
 |   `-- config.ts
 |-- utils/
-|   |-- color.ts
-|   |-- contrast.ts
 |   `-- range.ts
 `-- test/
     |-- fixtures/

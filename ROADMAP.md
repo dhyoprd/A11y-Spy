@@ -11,7 +11,10 @@ Focus: basic VS Code diagnostics and missing image alt detection.
 - Support HTML.
 - Support JSX and TSX.
 - Add quick fix for `alt=""`.
+- Add minimal `a11ySpy.enable` and `a11ySpy.rules.imgAlt` configuration.
 - Add unit tests for rule engine.
+- Add minimal CI for compile, lint, and test.
+- Support local `.vsix` packaging.
 - Add README, CONTRIBUTING, SECURITY, and LICENSE.
 
 ## v0.2.0 - Contrast Checker

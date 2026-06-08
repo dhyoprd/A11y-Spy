@@ -18,7 +18,7 @@ Common issues include:
 - Missing labels on interactive elements.
 - Incorrect semantic HTML.
 
-The MVP focuses on the first two issues because they are common, understandable, and suitable for real-time static analysis.
+The v0.1 MVP focuses only on missing image alternatives because it is common, understandable, and suitable for real-time static analysis. Color contrast and Tailwind checks are planned for later releases.
 
 ## 3. User Personas
 
@@ -64,6 +64,8 @@ Acceptance criteria:
 - Detects `<img src="..." />` in HTML.
 - Detects `<img src="..." />` in JSX/TSX.
 - Does not warn when `alt` exists.
+- Does not warn for JSX/TSX image elements with spread props.
+- Does not warn for explicitly hidden or presentational images.
 - Shows diagnostic message.
 - Offers quick fix to add `alt=""`.
 - Offers explanation that empty `alt` should only be used for decorative images.
@@ -72,6 +74,8 @@ Acceptance criteria:
 
 As a developer, I want A11y-Spy to warn me when text contrast is too low, so that my UI remains readable.
 
+Status: planned after v0.1.
+
 Acceptance criteria:
 
 - Detects basic CSS `color` and `background-color` pairs.
@@ -79,11 +83,13 @@ Acceptance criteria:
 - Warns when contrast is below configured threshold.
 - Shows current ratio and expected ratio.
 - Does not warn if values cannot be safely resolved.
-- Supports basic hex color values in the MVP.
+- Supports basic hex color values in a later release.
 
 ### Tailwind Contrast Warning
 
 As a Tailwind user, I want A11y-Spy to warn me when text and background utility classes create low contrast.
+
+Status: planned after v0.1.
 
 Acceptance criteria:
 
@@ -140,23 +146,23 @@ Users should be able to configure:
 ```json
 {
   "a11ySpy.enable": true,
-  "a11ySpy.rules.imgAlt": "error",
-  "a11ySpy.rules.colorContrast": "warning",
-  "a11ySpy.tailwind.enabled": true
+  "a11ySpy.rules.imgAlt": "warning"
 }
 ```
 
+`a11ySpy.rules.imgAlt` accepts `"off"`, `"info"`, `"warning"`, and `"error"`. Color contrast and Tailwind configuration are planned after v0.1.
+
 ### Supported Languages
 
-MVP:
+v0.1:
 
 - HTML
 - JSX
 - TSX
-- CSS
 
 Later:
 
+- CSS
 - Vue
 - Svelte
 - Astro
@@ -168,9 +174,11 @@ Later:
 ### Performance
 
 - Diagnostics should run quickly while editing.
-- Use debouncing to avoid running analysis on every keystroke.
+- Use a 250ms debounce to avoid running analysis on every keystroke.
 - Avoid blocking the editor UI.
-- Analyze only active or changed documents in the MVP.
+- Analyze open supported documents on activation/open and re-analyze changed documents while editing.
+- Do not scan the whole workspace in v0.1.
+- Skip documents larger than 500 KB.
 
 ### Accuracy
 
@@ -197,9 +205,7 @@ Later:
 | Missing image alt detection | P0 |
 | VS Code diagnostics | P0 |
 | Quick fix for empty alt | P0 |
-| CSS hex contrast checker | P1 |
-| Tailwind default color contrast checker | P1 |
-| Rule configuration | P1 |
+| Minimal rule configuration for image alt | P0 |
 | Documentation | P0 |
 | Tests | P0 |
 
@@ -207,6 +213,11 @@ Later:
 
 - Full WCAG compliance scanner.
 - Browser runtime testing.
+- CSS color contrast checking.
+- Tailwind color contrast checking.
+- Framework image components such as Next.js `<Image>`.
+- `<input type="image">`.
+- Command palette commands.
 - AI-generated alt text.
 - Full CSS cascade resolution.
 - Full Tailwind config parsing.
@@ -217,6 +228,5 @@ Later:
 
 - 90%+ test coverage for rule engine.
 - Missing alt rule works in HTML, JSX, and TSX.
-- Contrast rule works for basic CSS hex values.
 - New contributor can create a rule by following docs.
 - MVP can be packaged as a `.vsix` file.

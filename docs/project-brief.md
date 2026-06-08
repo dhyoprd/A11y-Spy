@@ -55,20 +55,20 @@ A11y-Spy is not intended to replace:
 - Browser-based accessibility tools.
 - Legal compliance review.
 
-## MVP Scope
+## v0.1 MVP Scope
 
-The first version focuses on:
+The v0.1 release focuses on:
 
 - Missing `alt` attributes on image elements.
-- Low text/background color contrast.
 - Basic quick fixes.
 - Diagnostics inside VS Code.
 - Documentation for contributors.
 
+Low text/background color contrast is planned after v0.1.
+
 ## Success Metrics
 
 - Extension can detect missing image alt attributes in HTML, JSX, and TSX.
-- Extension can warn about low contrast in basic CSS.
 - Extension provides at least one safe quick fix.
 - Rules have automated tests.
 - New contributors can run the project locally using documentation.

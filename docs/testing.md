@@ -3,7 +3,9 @@
 A11y-Spy should be tested at two levels:
 
 1. Core rule tests.
-2. VS Code integration tests.
+2. Manual VS Code Extension Development Host checks.
+
+VS Code integration tests are planned after the initial extension behavior stabilizes.
 
 ## Rule Tests
 
@@ -15,7 +17,12 @@ Example test cases for `img-alt`:
 - Should not report `img` with `alt`.
 - Should not report `img` with `alt=""`.
 - Should support JSX self-closing `img`.
+- Should support JSX paired `img`.
 - Should support HTML `img`.
+- Should not report JSX `img` with spread props.
+- Should not report explicitly hidden or presentational images.
+- Should place the diagnostic range on the `img` tag name.
+- Should handle non-ASCII text before an `img` without range drift.
 
 ## Fixture-Based Testing
 
@@ -28,9 +35,6 @@ src/test/fixtures/
 |   |-- valid.html
 |   |-- invalid.tsx
 |   `-- valid.tsx
-`-- contrast/
-    |-- invalid.css
-    `-- valid.css
 ```
 
 ## Running Tests
@@ -59,6 +63,7 @@ npm run lint
 
 - Every rule must have valid and invalid examples.
 - Every quick fix must be tested.
+- Assert the exact diagnostic message in at least one representative case.
 - Avoid tests that depend on network access.
 - Avoid tests that require external services.
 - Prefer deterministic fixtures.

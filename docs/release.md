@@ -31,20 +31,15 @@ npm run compile
 npm version patch
 ```
 
-4. Package extension.
+4. Package extension locally.
 
 ```bash
-vsce package
+npm run package
 ```
 
-5. Publish.
-
-```bash
-vsce publish
-```
-
-6. Create GitHub release.
-7. Announce release.
+5. Install and smoke-test the generated `.vsix`.
+6. Create GitHub release if this is a public release.
+7. Announce release if appropriate.
 
 ## Release Checklist
 
@@ -53,5 +48,5 @@ vsce publish
 - Version updated.
 - Documentation updated.
 - `.vsix` package generated.
-- GitHub tag created.
-- Marketplace page checked.
+- GitHub tag created, if this is a public release.
+- Marketplace page checked, if publishing to Marketplace.

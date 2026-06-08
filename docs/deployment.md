@@ -10,16 +10,10 @@ npm run compile
 
 ## Package
 
-Install VSCE:
+Package the extension with the project-local VSCE dependency:
 
 ```bash
-npm install -g @vscode/vsce
-```
-
-Package the extension:
-
-```bash
-vsce package
+npm run package
 ```
 
 This creates a `.vsix` file.
@@ -32,17 +26,17 @@ code --install-extension a11y-spy-0.1.0.vsix
 
 ## Marketplace Publishing
 
-Before publishing:
+Marketplace publishing is out of scope for v0.1. Before publishing a later release:
 
 1. Create a publisher account.
 2. Add publisher ID to `package.json`.
 3. Create a Personal Access Token.
-4. Login with VSCE.
+4. Login with the project-local VSCE dependency.
 5. Publish the extension.
 
 ```bash
-vsce login your-publisher-name
-vsce publish
+npm exec vsce login your-publisher-name
+npm exec vsce publish
 ```
 
 ## Pre-Publish Checklist
@@ -52,7 +46,7 @@ vsce publish
 - CHANGELOG is updated.
 - Version is updated.
 - Tests pass.
-- Extension icon exists.
+- Extension icon exists, if publishing to Marketplace.
 - Marketplace description is clear.
 - Screenshots or GIFs are available.
 - No secrets are committed.
