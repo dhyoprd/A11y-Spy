@@ -82,6 +82,9 @@ vi.mock(
       Warning: 1,
       Information: 2
     },
+    Uri: {
+      parse: vi.fn((value: string) => ({ toString: () => value }))
+    },
     Range: class {
       constructor(
         readonly startLine: number,

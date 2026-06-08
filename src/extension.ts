@@ -10,7 +10,7 @@ import {
   createDocumentDiagnosticScheduler,
   SUPPORTED_LANGUAGE_IDS
 } from "./vscode/document-diagnostics";
-import { mapDiagnosticSeverity } from "./vscode/diagnostics";
+import { createDiagnosticCode, mapDiagnosticSeverity } from "./vscode/diagnostics";
 import { FixRegistry } from "./vscode/fix-registry";
 
 const DIAGNOSTIC_COLLECTION_NAME = "a11y-spy";
@@ -76,7 +76,7 @@ function toVscodeDiagnostic(diagnostic: DiagnosticResult): vscode.Diagnostic {
     mapDiagnosticSeverity(diagnostic.severity, vscode.DiagnosticSeverity)
   );
   vscodeDiagnostic.source = diagnostic.source;
-  vscodeDiagnostic.code = diagnostic.ruleId;
+  vscodeDiagnostic.code = createDiagnosticCode(diagnostic.ruleId, vscode.Uri);
 
   return vscodeDiagnostic;
 }

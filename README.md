@@ -24,6 +24,12 @@ It highlights accessibility issues like syntax errors, explains why they matter,
 - Provide a quick fix that adds `alt=""` for decorative images.
 - Explain each issue with short, developer-friendly guidance.
 
+## v0.1 Limits
+
+- Documents larger than 500 KB are skipped to keep live diagnostics responsive.
+- The image-alt rule checks native HTML `<img>` elements and lowercase JSX/TSX `<img>` elements only.
+- Framework image components, `<input type="image">`, contrast checks, and Tailwind analysis are out of scope for v0.1.
+
 ## Planned Features
 
 - Warn when text and background color contrast is too low.
