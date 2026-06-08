@@ -7,7 +7,7 @@ import {
   createA11ySpyCodeActionProvider
 } from "./vscode/code-actions";
 import {
-  refreshOpenSupportedDocuments,
+  createDocumentDiagnosticScheduler,
   SUPPORTED_LANGUAGE_IDS
 } from "./vscode/document-diagnostics";
 import { mapDiagnosticSeverity } from "./vscode/diagnostics";
@@ -25,16 +25,12 @@ export function activate(context: vscode.ExtensionContext): void {
     DIAGNOSTIC_COLLECTION_NAME
   );
   const fixRegistry = new FixRegistry();
-
-  const refreshDiagnostics = () => {
-    refreshOpenSupportedDocuments(
-      vscode.workspace.textDocuments,
-      diagnosticCollection,
-      fixRegistry,
-      readA11ySpyConfig(),
-      toVscodeDiagnostic
-    );
-  };
+  const scheduler = createDocumentDiagnosticScheduler<vscode.Uri, vscode.Diagnostic>({
+    collection: diagnosticCollection,
+    fixRegistry,
+    getConfig: readA11ySpyConfig,
+    mapDiagnostic: toVscodeDiagnostic
+  });
 
   context.subscriptions.push(
     diagnosticCollection,
@@ -48,12 +44,16 @@ export function activate(context: vscode.ExtensionContext): void {
         event.affectsConfiguration(`${CONFIG_SECTION}.enable`) ||
         event.affectsConfiguration(`${CONFIG_SECTION}.rules.imgAlt`)
       ) {
-        refreshDiagnostics();
+        scheduler.refresh(vscode.workspace.textDocuments);
       }
-    })
+    }),
+    vscode.workspace.onDidOpenTextDocument((document) => scheduler.analyzeNow(document)),
+    vscode.workspace.onDidChangeTextDocument((event) => scheduler.schedule(event.document)),
+    vscode.workspace.onDidCloseTextDocument((document) => scheduler.close(document)),
+    { dispose: () => scheduler.dispose() }
   );
 
-  refreshDiagnostics();
+  scheduler.refresh(vscode.workspace.textDocuments);
 }
 
 export function deactivate(): void {}
