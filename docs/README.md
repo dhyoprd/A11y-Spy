@@ -6,6 +6,7 @@ This directory contains the planning, architecture, setup, testing, deployment, 
 
 - [Project brief](project-brief.md)
 - [Product requirements](prd.md)
+- [v0.1 MVP scope decision](adr/0001-v0-1-mvp-scope.md)
 - [Roadmap](../ROADMAP.md)
 - [Changelog](../CHANGELOG.md)
 
@@ -13,6 +14,7 @@ This directory contains the planning, architecture, setup, testing, deployment, 
 
 - [Architecture](architecture.md)
 - [Internal API](api.md)
+- [Image alt rule](rules/img-alt.md)
 - [Database and storage](database.md)
 - [Setup guide](setup.md)
 - [Testing guide](testing.md)

@@ -2,7 +2,7 @@
 
 A11y-Spy is a real-time accessibility auditor for developers. It helps detect common web accessibility issues while coding, directly inside Visual Studio Code.
 
-Instead of waiting until the end of a project to run an accessibility audit, A11y-Spy gives instant feedback as developers write HTML, JSX, TSX, CSS, and Tailwind-based UI code.
+Instead of waiting until the end of a project to run an accessibility audit, A11y-Spy gives instant feedback as developers write HTML, JSX, and TSX. CSS contrast and Tailwind analysis are planned after v0.1.
 
 ## Problem
 
@@ -16,14 +16,20 @@ A11y-Spy brings accessibility feedback into the developer workflow.
 
 It highlights accessibility issues like syntax errors, explains why they matter, and provides quick fixes for common problems.
 
-## Core Features
+## Available in v0.1
 
 - Detect missing `alt` attributes on `<img />` elements.
 - Show editor diagnostics for accessibility issues.
-- Warn when text and background color contrast is too low.
-- Support HTML, JSX, TSX, CSS, and Tailwind class analysis.
-- Provide quick fixes for basic accessibility problems.
+- Support HTML, JSX, and TSX.
+- Provide a quick fix that adds `alt=""` for decorative images.
 - Explain each issue with short, developer-friendly guidance.
+
+## Planned Features
+
+- Warn when text and background color contrast is too low.
+- Support CSS hex color contrast analysis.
+- Support Tailwind default color contrast analysis.
+- Add more accessibility rules for labels, buttons, anchors, and document structure.
 
 ## Example
 
@@ -35,14 +41,15 @@ A11y-Spy warning:
 
 ```text
 Image element is missing an alt attribute.
-Add meaningful alt text or use alt="" if the image is decorative.
 ```
 
-Suggested fix:
+Suggested quick fix:
 
 ```html
 <img src="/hero.png" alt="" />
 ```
+
+Use meaningful alt text when the image conveys information. Use `alt=""` only when the image is decorative.
 
 ## Target Standard
 
@@ -51,8 +58,9 @@ A11y-Spy aims to help developers follow practical WCAG 2.2 Level AA accessibilit
 The first version focuses on:
 
 - Text alternatives for images.
-- Minimum contrast ratio for readable text.
-- Developer-friendly quick fixes for common accessibility mistakes.
+- Developer-friendly diagnostics and a safe decorative-image quick fix.
+
+Future versions will add minimum contrast checks for readable text.
 
 ## Tech Stack
 
@@ -61,8 +69,8 @@ The first version focuses on:
 - VS Code Extension API
 - Node.js
 - ESLint
-- Vitest or Jest
-- VSCE for packaging and publishing
+- Vitest
+- VSCE for local packaging
 
 ## Project Status
 
@@ -93,15 +101,15 @@ npm run lint
 
 ## Supported File Types
 
-Initial MVP:
+v0.1:
 
 - `.html`
 - `.jsx`
 - `.tsx`
-- `.css`
 
 Planned:
 
+- `.css`
 - `.vue`
 - `.svelte`
 - `.astro`
@@ -112,6 +120,8 @@ Planned:
 
 - [Project brief](docs/project-brief.md)
 - [Product requirements](docs/prd.md)
+- [v0.1 scope decision](docs/adr/0001-v0-1-mvp-scope.md)
+- [Image alt rule](docs/rules/img-alt.md)
 - [Architecture](docs/architecture.md)
 - [Internal API](docs/api.md)
 - [Setup guide](docs/setup.md)

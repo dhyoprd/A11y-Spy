@@ -1,0 +1,45 @@
+{
+  "name": "a11y-spy",
+  "displayName": "A11y-Spy",
+  "description": "Real-time accessibility diagnostics for frontend developers in VS Code.",
+  "version": "0.1.0",
+  "publisher": "dhyoprd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhyoprd/A11y-Spy.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "parse5": "^7.2.1",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.28.0",
+    "@types/node": "^20.14.15",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.1",
+    "eslint": "^9.28.0",
+    "typescript-eslint": "^8.34.0",
+    "vitest": "^3.2.3"
+  }
+}

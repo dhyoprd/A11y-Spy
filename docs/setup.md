@@ -49,8 +49,10 @@ You should see a diagnostic warning if the image does not have an `alt` attribut
 ## Recommended VS Code Extensions
 
 - ESLint
-- Prettier
-- Extension Test Runner
+
+## v0.1 Limits
+
+Documents larger than 500 KB are skipped to keep live diagnostics responsive.
 
 ## Troubleshooting
 

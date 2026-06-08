@@ -37,7 +37,7 @@ export const imgAltRule: A11yRule = {
     description: "Detects image elements without an alt attribute.",
     wcag: ["1.1.1"],
     languages: ["html", "javascriptreact", "typescriptreact"],
-    defaultSeverity: "error",
+    defaultSeverity: "warning",
     fixable: true
   },
   run(context) {
@@ -76,8 +76,8 @@ export type DiagnosticResult = {
 export type FixAction = {
   title: string;
   kind: "quickfix";
-  replacementText?: string;
-  insertText?: string;
+  insertText: string;
+  offset: number;
 };
 ```
 
@@ -88,13 +88,11 @@ export type A11ySpyConfig = {
   enabled: boolean;
   rules: {
     imgAlt: "off" | "info" | "warning" | "error";
-    colorContrast: "off" | "info" | "warning" | "error";
-  };
-  tailwind: {
-    enabled: boolean;
   };
 };
 ```
+
+Color contrast and Tailwind configuration are planned after v0.1.
 
 ## Adding a New Rule
 
