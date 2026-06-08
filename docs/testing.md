@@ -53,11 +53,15 @@ npm run lint
 
 1. Press `F5` in VS Code.
 2. Open the Extension Development Host.
-3. Create a test file.
-4. Add inaccessible code.
-5. Confirm diagnostics appear.
-6. Trigger quick fix.
-7. Confirm code changes correctly.
+3. Open existing HTML, JSX, and TSX files and confirm missing-alt diagnostics appear on activation.
+4. Open a new supported document and confirm diagnostics appear immediately.
+5. Edit a supported document and confirm diagnostics update after the debounce delay.
+6. Close a supported document and confirm its diagnostics are removed from the Problems panel.
+7. Create an untitled HTML, JSX, or TSX document and confirm diagnostics appear.
+8. Open a virtual or readonly supported document and confirm diagnostics can appear, while quick fixes remain unavailable.
+9. Add content larger than 500 KB and confirm existing diagnostics for that document are cleared.
+10. Toggle `a11ySpy.enable` and `a11ySpy.rules.imgAlt` and confirm open supported documents re-analyze or clear immediately.
+11. Trigger quick fix in an editable supported document and confirm code changes correctly.
 
 ## Test Quality Rules
 
