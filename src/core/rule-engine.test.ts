@@ -16,6 +16,12 @@ describe("runA11ySpy", () => {
         source: "A11y-Spy",
         message: "Image element is missing an alt attribute.",
         severity: "warning",
+        fix: {
+          title: 'Add alt="" for decorative image',
+          kind: "quickfix",
+          insertText: ' alt=""',
+          offset: 4
+        },
         range: {
           start: { line: 0, character: 1 },
           end: { line: 0, character: 4 }
@@ -86,6 +92,21 @@ describe("runA11ySpy", () => {
     expect(diagnostics[0]?.range).toEqual({
       start: { line: 0, character: 4 },
       end: { line: 0, character: 7 }
+    });
+  });
+
+  it("uses one simple fix insertion strategy for multi-line HTML images", () => {
+    const diagnostics = runA11ySpy({
+      documentText: ['<img', '  src="/hero.png"', ">"].join("\n"),
+      fileName: "index.html",
+      languageId: "html"
+    });
+
+    expect(diagnostics[0]?.fix).toEqual({
+      title: 'Add alt="" for decorative image',
+      kind: "quickfix",
+      insertText: ' alt=""',
+      offset: 4
     });
   });
 });

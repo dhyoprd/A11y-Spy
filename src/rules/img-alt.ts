@@ -20,6 +20,12 @@ export function runImgAltRule(
         source: "A11y-Spy",
         message: IMG_ALT_MESSAGE,
         severity: "warning",
+        fix: {
+          title: 'Add alt="" for decorative image',
+          kind: "quickfix",
+          insertText: ' alt=""',
+          offset: candidate.tagNameEndOffset
+        },
         range: offsetsToRange(
           documentText,
           candidate.tagNameStartOffset,

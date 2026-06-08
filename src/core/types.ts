@@ -18,6 +18,14 @@ export type DiagnosticResult = {
   message: string;
   severity: DiagnosticSeverity;
   range: Range;
+  fix?: FixAction;
+};
+
+export type FixAction = {
+  title: string;
+  kind: "quickfix";
+  insertText: string;
+  offset: number;
 };
 
 export type RuleContext = {
