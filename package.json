@@ -20,6 +20,30 @@
     "onLanguage:javascriptreact",
     "onLanguage:typescriptreact"
   ],
+  "contributes": {
+    "configuration": {
+      "title": "A11y-Spy",
+      "type": "object",
+      "properties": {
+        "a11ySpy.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable A11y-Spy diagnostics."
+        },
+        "a11ySpy.rules.imgAlt": {
+          "type": "string",
+          "enum": [
+            "off",
+            "info",
+            "warning",
+            "error"
+          ],
+          "default": "warning",
+          "description": "Controls the severity of missing image alt diagnostics."
+        }
+      }
+    }
+  },
   "main": "./out/extension.js",
   "scripts": {
     "vscode:prepublish": "npm run compile",

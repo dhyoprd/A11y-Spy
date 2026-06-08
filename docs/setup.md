@@ -46,6 +46,17 @@ npm run watch
 
 You should see a diagnostic warning if the image does not have an `alt` attribute.
 
+## Configuration
+
+```json
+{
+  "a11ySpy.enable": true,
+  "a11ySpy.rules.imgAlt": "warning"
+}
+```
+
+Set `a11ySpy.enable` to `false` to clear and pause diagnostics. `a11ySpy.rules.imgAlt` accepts `off`, `info`, `warning`, and `error`.
+
 ## Recommended VS Code Extensions
 
 - ESLint
